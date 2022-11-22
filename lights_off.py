@@ -13,17 +13,23 @@ from launch_screen import *
 
 if __name__ == "__main__":
     playing = True
+    print("started")
+    
     # GAME LOOP
     while playing:
-        print("started")
-    
         # Welcome Screen
         launch_sc = LaunchScreen()
         launch_sc.display()
+        print(launch_sc.choice)
+        
 
         # Game Sceen
-
-        playing = False
+        if launch_sc.choice == "start":
+            print("continuing")
+            continue
+        else:
+            print("stopping")
+            playing = False
 
     # Exit Game
 print ("stopped")
