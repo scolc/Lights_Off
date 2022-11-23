@@ -110,5 +110,50 @@ class GameScreen():
         @param row The row the light is in.
         @param col The column the light is in.
         """
+        # Flip current button
         self.grid[row][col].flip()
+
+        # Flip surrounding buttons
+        # Left
+        if col != 0: # Not the left edge
+            self.grid[row][col - 1].flip()
+        
+        # Right
+        if col != self.grid_size - 1: # Not the right edge
+            self.grid[row][col + 1].flip()
+
+        # Up
+        if row != 0: # Not the top edge
+            self.grid[row - 1][col].flip()
+        
+        # Down
+        if row != self.grid_size - 1: # Not the bottom edge
+            self.grid[row + 1][col].flip()
+        
+        if self.check_win():
+            # Winning condition met, close window
+            self.button_choice(choice="")
+    
+    def check_win(self) -> bool:
+        """
+        This method checks the grid to see if the win condition has been met.
+        
+        @return True if game has been won, False otherwise.
+        """
+        # Lights on counter
+        lights_on = 0
+
+        # Check each button state in the grid 
+        for row in self.grid:
+            for btn in row:
+                if btn.state == "on":
+                    # Add 1 to the counter
+                    lights_on += 1
+        
+        if lights_on == 0:
+            # Winning condition met
+            return True
+        else:
+            return False
+
 
