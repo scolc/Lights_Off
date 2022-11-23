@@ -32,12 +32,12 @@ class LightBtn():
         self.config = Config()
 
         # Button properties
-        self.state = "on"
+        self.state = "off"
         self.row = row
         self.col = col
         
         self.light_btn = Button(win, command=lambda: action(row=self.row, col=self.col))
-        self.light_btn["bg"] = self.config.light_btn_on
+        self.light_btn["bg"] = self.config.light_btn_off
 
     def flip(self) -> None:
         """

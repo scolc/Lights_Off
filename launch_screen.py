@@ -26,13 +26,19 @@ class LaunchScreen():
         self.win_cols = 6
         self.win_rows = 4
 
+        self.launch.title("Lights Off!")
+        self.launch.resizable(width=False, height=False)
+        self.launch["bg"] = self.config.bg_window
+
         # Buttons
         self.start = Button(self.launch,
                             text="Start",
+                            font=self.config.btn_font,
                             command=lambda: self.button_choice("start"))
 
         self.exit = Button(self.launch,
                            text="Exit",
+                           font=self.config.btn_font,
                            command=lambda: self.button_choice("exit"))
 
         # Button Choice

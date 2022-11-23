@@ -25,7 +25,6 @@ if __name__ == "__main__":
         
 
         # Game Sceen
-        
         if choice == "start":
             print("launching game screen")
             game_sc = GameScreen()
