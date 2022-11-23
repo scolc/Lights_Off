@@ -9,6 +9,7 @@ Main executable for game.
 
 
 from launch_screen import *
+from game_screen import *
 
 
 if __name__ == "__main__":
@@ -19,15 +20,18 @@ if __name__ == "__main__":
     while playing:
         # Welcome Screen
         launch_sc = LaunchScreen()
-        launch_sc.display()
-        print(launch_sc.choice)
+        #launch_sc.display()
+        choice = launch_sc.display()
         
 
         # Game Sceen
-        if launch_sc.choice == "start":
-            print("continuing")
-            continue
-        else:
+        
+        if choice == "start":
+            print("launching game screen")
+            game_sc = GameScreen()
+            choice = game_sc.display()
+            
+        if choice == "exit":
             print("stopping")
             playing = False
 
