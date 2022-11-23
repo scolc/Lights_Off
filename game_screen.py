@@ -4,6 +4,7 @@ The main sceen for the game.
 The player clicks on light buttons to turn them on or off.
 """
 
+import random
 from tkinter import *
 from config import Config
 from light_btn import *
@@ -26,10 +27,14 @@ class GameScreen():
 
         # Window settings
         self.game = Tk()
+        self.game.title("Lights Off!")
+        self.game.resizable(width=False, height=False)
+        self.game["bg"] = self.config.bg_window
 
         # Exit Button
         self.exit = Button(self.game,
                            text="Exit",
+                           font=self.config.btn_font,
                            command=lambda: self.button_choice("exit"))
         
         # Player choice to continue or exit
@@ -51,7 +56,7 @@ class GameScreen():
         screen_height = self.game.winfo_screenheight()
 
         win_x = int(screen_width / 2 - win_width / 2)
-        win_y = int(screen_height * 25/100)
+        win_y = int((screen_height - win_height) / 4)
 
         self.game.geometry(str(win_width) +
                             "x" +
@@ -88,6 +93,8 @@ class GameScreen():
                         y=win_height - pad - self.config.tile_size,
                         width=win_width - (pad * 2),
                         height=self.config.tile_size)
+
+        self.random_grid()
         
         self.game.mainloop()
 
@@ -133,6 +140,25 @@ class GameScreen():
         if self.check_win():
             # Winning condition met, close window
             self.button_choice(choice="")
+    
+    # Functionality
+
+    def random_grid(self) -> None:
+        """
+        This method randomly sets the lights of the grid.
+        """
+        # Create list of indices to represent grid columns
+        indices = list(range(self.grid_size))
+        
+        for row_num in range(len(self.grid)):
+            # Shuffle the indices and select a random number of them to flip
+            random.shuffle(indices)
+            n_indices = random.randint(0, int(self.grid_size * 75 / 100))
+
+            for i in range(n_indices):
+                self.light_press(row=row_num, col=i)
+
+
     
     def check_win(self) -> bool:
         """
