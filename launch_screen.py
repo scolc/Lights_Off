@@ -17,7 +17,7 @@ class LaunchScreen():
     and the player interaction.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Initialise config
         self.config = Config()
         
@@ -26,6 +26,7 @@ class LaunchScreen():
         self.win_cols = 6
         self.win_rows = 4
 
+        # Buttons
         self.start = Button(self.launch,
                             text="Start",
                             command=lambda: self.button_choice("start"))
@@ -38,7 +39,12 @@ class LaunchScreen():
         self.choice = ""
 
     # Display Method
-    def display(self) -> None:
+    def display(self) -> str:
+        """
+        This method handles displaying the launch window.
+
+        @return The player choice string.
+        """
 
         pad = int(self.config.tile_size / 2)
         win_width = int(self.win_cols * self.config.tile_size)
@@ -69,8 +75,14 @@ class LaunchScreen():
                             str(win_y))
 
         self.launch.mainloop()
+        return self.choice
 
     # Button Method
-    def button_choice(self, choice):
+    def button_choice(self, choice) -> None:
+        """
+        This method handles the button press and closes the window.
+
+        @param choice The button choice text.
+        """
         self.choice = choice
         self.launch.destroy()
