@@ -8,31 +8,25 @@ Main executable for game.
 """
 
 
-from launch_screen import *
-from game_screen import *
+#from launch_screen import *
+#from game_screen import *
+from launch_screen import LaunchScreen as LS
+from game_screen import GameScreen as GS
 
 
 if __name__ == "__main__":
     playing = True
-    print("started")
+    #print("started")
     
     # GAME LOOP
     while playing:
         # Welcome Screen
-        launch_sc = LaunchScreen()
-        #launch_sc.display()
-        choice = launch_sc.display()
-        
+        choice = LS().display()
 
         # Game Sceen
         if choice == "start":
-            print("launching game screen")
-            game_sc = GameScreen()
-            choice = game_sc.display()
-            
+            choice = GS().display()
+        
+        # Exit Game    
         if choice == "exit":
-            print("stopping")
             playing = False
-
-    # Exit Game
-print ("stopped")

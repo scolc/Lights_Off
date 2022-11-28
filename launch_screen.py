@@ -6,7 +6,7 @@ The player chooses to either play a grid or exit the game.
 
 from tkinter import *
 
-from config import *
+from config import Config
 
 
 class LaunchScreen():
@@ -26,10 +26,6 @@ class LaunchScreen():
         self.win_cols = 6
         self.win_rows = 4
 
-        self.launch.title("Lights Off!")
-        self.launch.resizable(width=False, height=False)
-        self.launch["bg"] = self.config.bg_window
-
         # Buttons
         self.start = Button(self.launch,
                             text="Start",
@@ -44,13 +40,17 @@ class LaunchScreen():
         # Button Choice
         self.choice = ""
 
-    # Display Method
+    # Display Function
     def display(self) -> str:
         """
-        This method handles displaying the launch window.
+        This function handles displaying the launch window.
 
         @return The player choice string.
         """
+        # Window Settings
+        self.launch.title("Lights Off!")
+        self.launch.resizable(width=False, height=False)
+        self.launch["bg"] = self.config.bg_window
 
         pad = int(self.config.tile_size / 2)
         win_width = int(self.win_cols * self.config.tile_size)
@@ -83,10 +83,10 @@ class LaunchScreen():
         self.launch.mainloop()
         return self.choice
 
-    # Button Method
+    # Button Function
     def button_choice(self, choice) -> None:
         """
-        This method handles the button press and closes the window.
+        This function handles the button press and closes the window.
 
         @param choice The button choice text.
         """

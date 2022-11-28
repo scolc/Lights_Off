@@ -7,7 +7,8 @@ The player clicks on light buttons to turn them on or off.
 import random
 from tkinter import *
 from config import Config
-from light_btn import *
+from light_btn import LightBtn
+from win_screen import WinScreen
 
 
 class GameScreen():
@@ -27,9 +28,6 @@ class GameScreen():
 
         # Window settings
         self.game = Tk()
-        self.game.title("Lights Off!")
-        self.game.resizable(width=False, height=False)
-        self.game["bg"] = self.config.bg_window
 
         # Exit Button
         self.exit = Button(self.game,
@@ -40,14 +38,18 @@ class GameScreen():
         # Player choice to continue or exit
         self.choice = ""
 
-
+    # Display Function
     def display(self) -> str:
         """
-        This method handles displaying the game window.
+        This function handles displaying the game window.
 
         @return The player choice string.
         """
-        # Sizes
+        # Window Properties
+        self.game.title("Lights Off!")
+        self.game.resizable(width=False, height=False)
+        self.game["bg"] = self.config.bg_window
+
         pad = int(self.config.tile_size / 2)
         win_width = int(self.grid_size * self.config.tile_size + pad * 2)
         win_height = int(self.grid_size * self.config.tile_size + self.config.tile_size + pad * 3)
@@ -59,12 +61,12 @@ class GameScreen():
         win_y = int((screen_height - win_height) / 4)
 
         self.game.geometry(str(win_width) +
-                            "x" +
-                            str(win_height) +
-                            "+" +
-                            str(win_x) +
-                            "+" +
-                            str(win_y))
+                           "x" +
+                           str(win_height) +
+                           "+" +
+                           str(win_x) +
+                           "+" +
+                           str(win_y))
 
         # Create grid
         current_y = pad
@@ -94,16 +96,18 @@ class GameScreen():
                         width=win_width - (pad * 2),
                         height=self.config.tile_size)
 
+        # Generate a puzzle
         self.random_grid()
         
+        # Display the window
         self.game.mainloop()
 
         return self.choice
 
-    # Button Methods
-    def button_choice(self, choice):
+    # Button Functions
+    def button_choice(self, choice) -> None:
         """
-        This method handles the button press and closes the window.
+        This function handles the button press and closes the window.
 
         @param choice The button choice text.
         """
@@ -112,7 +116,7 @@ class GameScreen():
                 
     def light_press(self, row, col) -> None:
         """
-        This method handles the action when a light is pressed.
+        This function handles the action when a light is pressed.
         
         @param row The row the light is in.
         @param col The column the light is in.
@@ -138,31 +142,35 @@ class GameScreen():
             self.grid[row + 1][col].flip()
         
         if self.check_win():
-            # Winning condition met, close window
+            # Winning condition met, display congrats
+            WinScreen(game_win=self.game).display()
+            
+            # Close window and return to the launch screen
             self.button_choice(choice="")
     
-    # Functionality
-
+    # Game Functionality
     def random_grid(self) -> None:
         """
-        This method randomly sets the lights of the grid.
+        This function randomly sets the lights of the grid to form the starting puzzle.
         """
-        # Create list of indices to represent grid columns
-        indices = list(range(self.grid_size))
-        
-        for row_num in range(len(self.grid)):
-            # Shuffle the indices and select a random number of them to flip
-            random.shuffle(indices)
-            n_indices = random.randint(0, int(self.grid_size * 75 / 100))
+        # Create list of indices to represent grid columns and rows
+        col_indices = list(range(self.grid_size))
+        row_indices = list(range(self.grid_size))
 
-            for i in range(n_indices):
-                self.light_press(row=row_num, col=i)
+        # Shuffle the row indices to affect rows in random order
+        random.shuffle(row_indices)
 
+        for row_num in row_indices:
+            # Shuffle the col indices and select a random number of them to flip
+            random.shuffle(col_indices)
+            num_indices = random.randint(0, int(self.grid_size))
+            
+            for i in range(num_indices):
+                self.light_press(row=row_num, col=col_indices[i])
 
-    
     def check_win(self) -> bool:
         """
-        This method checks the grid to see if the win condition has been met.
+        This function checks the grid to see if the win condition has been met.
         
         @return True if game has been won, False otherwise.
         """
