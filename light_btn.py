@@ -31,10 +31,12 @@ class LightBtn():
         # Initialise config
         self.config = Config()
 
-        # Button properties
-        self.state = "off"
+        # Position
         self.row = row
         self.col = col
+
+        # Button properties
+        self.state = "off"
         
         self.light_btn = Button(win, command=lambda: action(row=self.row, col=self.col))
         self.light_btn["bg"] = self.config.light_btn_off
