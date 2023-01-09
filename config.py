@@ -13,10 +13,12 @@ class Config():
         # Tile size
         self.tile_size = 50
         self.btn_font = "Calibri " + str(int(self.tile_size / 3))
+        self.msg_font = "Calibri " + str(int(self.tile_size / 4))
 
         # Light button colours
-        self.light_btn_on = "#ffec00" # Yellow
-        self.light_btn_off = "#525252" # Grey
+        self.col_light_on = "#ffec00" # Yellow
+        self.col_light_off = "#525252" # Grey
+        self.col_frame_border = "#000000" # Black
 
         # Window
-        self.bg_window = "#26c6da"
+        self.col_win_bg = "#26c6da"

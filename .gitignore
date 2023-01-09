@@ -2,3 +2,4 @@ __pycache__/*
 todo.txt
 lights_off.spec
 build
+autopy_config.json

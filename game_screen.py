@@ -48,14 +48,98 @@ class GameScreen():
         # Window Properties
         self.game.title("Lights Off!")
         self.game.resizable(width=False, height=False)
-        self.game["bg"] = self.config.bg_window
+        self.game["bg"] = self.config.col_win_bg
 
-        pad = int(self.config.tile_size / 2)
-        win_width = int(self.grid_size * self.config.tile_size + pad * 2)
-        win_height = int(self.grid_size * self.config.tile_size + self.config.tile_size + pad * 3)
+        pad_rows = 0.5
+        pad = int(self.config.tile_size * pad_rows)
+        
+        # Widget Placement
+        # Game Message
+        message_frame = Frame(self.game,
+                              highlightthickness=1,
+                              highlightbackground=self.config.col_frame_border)
+        
+        message = ("Click a light to turn it on or off.\n" +
+                   "Each adjacent light will also switch.\n\n" +
+                   "Turn off all the lights to win!")
+        
+        message_label = Label(message_frame,
+                              text=message,
+                              font=self.config.msg_font)
+        
+        widget_width = self.grid_size * self.config.tile_size + 2 * pad
+        current_y = pad
+        win_rows = pad_rows
+
+        message_frame_rows = 2.5
+        message_frame.place(x=pad,
+                            y=current_y,
+                            width=widget_width,
+                            height=message_frame_rows * self.config.tile_size)
+        
+        message_label.place(relx=0.5,
+                            rely=0.5,
+                            anchor="center")
+
+        win_rows += message_frame_rows + pad_rows
+        current_y = win_rows * self.config.tile_size
+
+        # Create grid
+        grid_frame = Frame(self.game,
+                           highlightthickness=1,
+                           highlightbackground=self.config.col_frame_border,
+                           bg=self.config.col_win_bg)
+
+        grid_frame.place(x=pad,
+                         y=current_y,
+                         width=widget_width,
+                         height=widget_width)
+
+        grid_y = pad
+        for row_num in range(self.grid_size):
+            grid_x = pad
+            row = []
+                    
+            for col_num in range(self.grid_size):
+                light = LightBtn(win=grid_frame,
+                                 row=row_num,
+                                 col=col_num,
+                                 action=self.light_press)
+                
+                light.light_btn.place(x=grid_x,
+                                      y=grid_y,
+                                      width=self.config.tile_size,
+                                      height=self.config.tile_size)
+                
+                row.append(light)                
+                grid_x += self.config.tile_size
+            
+            self.grid.append(row)
+            grid_y += self.config.tile_size
+
+        win_rows += self.grid_size + pad_rows * 3
+        current_y = win_rows * self.config.tile_size
+        
+
+        # Button
+        button_rows = 1
+        self.exit.place(x=pad,
+                        y=current_y,
+                        width=widget_width,
+                        height=button_rows * self.config.tile_size)
+
+        win_rows += button_rows + pad_rows
+
+        # Generate a puzzle
+        self.random_grid()
+        
+        # Display the window
 
         screen_width = self.game.winfo_screenwidth()
         screen_height = self.game.winfo_screenheight()
+
+        win_width = int(widget_width + pad * 2)
+        win_height = int(win_rows * self.config.tile_size)
 
         win_x = int(screen_width / 2 - win_width / 2)
         win_y = int((screen_height - win_height) / 4)
@@ -68,38 +152,7 @@ class GameScreen():
                            "+" +
                            str(win_y))
 
-        # Create grid
-        current_y = pad
-        for row_num in range(self.grid_size):
-            current_x = pad
-            row = []
-                    
-            for col_num in range(self.grid_size):
-                light = LightBtn(win=self.game,
-                                 row=row_num,
-                                 col=col_num,
-                                 action=self.light_press)
-                
-                light.light_btn.place(x=current_x,
-                                      y=current_y,
-                                      width=self.config.tile_size,
-                                      height=self.config.tile_size)
-                
-                row.append(light)                
-                current_x += self.config.tile_size
-            
-            self.grid.append(row)
-            current_y += self.config.tile_size
-
-        self.exit.place(x=pad,
-                        y=win_height - pad - self.config.tile_size,
-                        width=win_width - (pad * 2),
-                        height=self.config.tile_size)
-
-        # Generate a puzzle
-        self.random_grid()
-        
-        # Display the window
+        self.game.protocol("WM_DELETE_WINDOW", func=lambda: self.button_choice("exit"))
         self.game.mainloop()
 
         return self.choice
