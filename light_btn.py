@@ -39,7 +39,7 @@ class LightBtn():
         self.state = "off"
         
         self.light_btn = Button(win, command=lambda: action(row=self.row, col=self.col))
-        self.light_btn["bg"] = self.config.light_btn_off
+        self.light_btn["bg"] = self.config.col_light_off
 
     def flip(self) -> None:
         """
@@ -48,8 +48,8 @@ class LightBtn():
         if self.state == "on":
             # Switch the light off
             self.state = "off"
-            self.light_btn["bg"] = self.config.light_btn_off
+            self.light_btn["bg"] = self.config.col_light_off
         else:
             # Switch the light on
             self.state = "on"
-            self.light_btn["bg"] = self.config.light_btn_on
+            self.light_btn["bg"] = self.config.col_light_on
