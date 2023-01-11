@@ -8,6 +8,7 @@ from typing import Callable
 from config import Config
 
 
+
 class LightBtn():
     """
     The light button class.
@@ -21,15 +22,17 @@ class LightBtn():
                  win: Toplevel,
                  row,
                  col,
-                 action: Callable) -> None:
+                 action: Callable,
+                 config: Config) -> None:
         """
         @param win The game window
         @param row The row the light is in
         @param col The column the light is in
         @param action The button command method
+        @param config The config
         """
         # Initialise config
-        self.config = Config()
+        self.config = config #Config()
 
         # Position
         self.row = row

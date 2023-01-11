@@ -7,26 +7,24 @@ Clicking on a light toggles it on or off and affects all adjacent lights as well
 Main executable for game.
 """
 
-
-#from launch_screen import *
-#from game_screen import *
+from config import Config
 from launch_screen import LaunchScreen as LS
 from game_screen import GameScreen as GS
 
 
 if __name__ == "__main__":
     playing = True
-    #print("started")
+    config = Config()
     
     # GAME LOOP
     while playing:
         # Welcome Screen
-        choice = LS().display()
+        choice = LS(config).display()
 
         # Game Sceen
         if choice == "start":
-            choice = GS().display()
+            choice = GS(config).display()
         
-        # Exit Game    
+        # Exit Game
         if choice == "exit":
             playing = False
