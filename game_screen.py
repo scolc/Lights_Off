@@ -7,8 +7,11 @@ The player clicks on light buttons to turn them on or off.
 import random
 from tkinter import *
 from config import Config
+from PIL import ImageTk, Image
+
 from light_btn import LightBtn
 from win_screen import WinScreen
+from message_box import MessageBox
 
 
 class GameScreen():
@@ -18,9 +21,12 @@ class GameScreen():
     Handles the main functionality of the game.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, config: Config) -> None:
+        """
+        @param config The config
+        """
         # Initialise config
-        self.config = Config()
+        self.config = config #Config()
 
         # Grid
         self.grid_size = 5
@@ -28,12 +34,16 @@ class GameScreen():
 
         # Window settings
         self.game = Tk()
-
+        self.game_canvas = Canvas(self.game,
+                                  highlightthickness=0)
         # Exit Button
-        self.exit = Button(self.game,
+        self.exit = Button(self.game_canvas,
                            text="Exit",
                            font=self.config.btn_font,
-                           command=lambda: self.button_choice("exit"))
+                           command=lambda: self.button_choice("exit"),
+                           border=5,
+                           background=self.config.col_light_on,
+                           activebackground=self.config.col_btn_active)
         
         # Player choice to continue or exit
         self.choice = ""
@@ -45,7 +55,7 @@ class GameScreen():
 
         @return The player choice string.
         """
-        # Window Properties
+        # Initial Window Settings
         self.game.title("Lights Off!")
         self.game.resizable(width=False, height=False)
         self.game["bg"] = self.config.col_win_bg
@@ -55,37 +65,47 @@ class GameScreen():
         
         # Widget Placement
         # Game Message
-        message_frame = Frame(self.game,
-                              highlightthickness=1,
-                              highlightbackground=self.config.col_frame_border)
+#        message_frame = Frame(self.game,
+#                              highlightthickness=1,
+#                              highlightbackground=self.config.col_frame_border)
         
         message = ("Click a light to turn it on or off.\n" +
                    "Each adjacent light will also switch.\n\n" +
                    "Turn off all the lights to win!")
         
-        message_label = Label(message_frame,
-                              text=message,
-                              font=self.config.msg_font)
+#        message_label = Label(message_frame,
+#                              text=message,
+#                              font=self.config.msg_font)
         
         widget_width = self.grid_size * self.config.tile_size + 2 * pad
+        
         current_y = pad
         win_rows = pad_rows
 
         message_frame_rows = 2.5
-        message_frame.place(x=pad,
-                            y=current_y,
-                            width=widget_width,
-                            height=message_frame_rows * self.config.tile_size)
+        message_frame_height = message_frame_rows * self.config.tile_size
+#        message_frame.place(x=pad,
+#                            y=current_y,
+#                            width=widget_width,
+#                            height=message_frame_rows * self.config.tile_size)
         
-        message_label.place(relx=0.5,
-                            rely=0.5,
-                            anchor="center")
+#        message_label.place(relx=0.5,
+#                            rely=0.5,
+#                            anchor="center")
+
+        message_frame = MessageBox(toplevel=self.game_canvas,
+                                   width=widget_width,
+                                   height=message_frame_height,
+                                   text=message,
+                                   config=self.config)
+
+        message_frame.frame.place(x=pad, y=current_y)
 
         win_rows += message_frame_rows + pad_rows
         current_y = win_rows * self.config.tile_size
 
         # Create grid
-        grid_frame = Frame(self.game,
+        grid_frame = Frame(self.game_canvas,
                            highlightthickness=1,
                            highlightbackground=self.config.col_frame_border,
                            bg=self.config.col_win_bg)
@@ -95,16 +115,22 @@ class GameScreen():
                          width=widget_width,
                          height=widget_width)
 
+        grid_canvas = Canvas(grid_frame,
+                             highlightthickness=0)
+
+        grid_frame_y = current_y
+
         grid_y = pad
         for row_num in range(self.grid_size):
             grid_x = pad
             row = []
                     
             for col_num in range(self.grid_size):
-                light = LightBtn(win=grid_frame,
+                light = LightBtn(win=grid_canvas,
                                  row=row_num,
                                  col=col_num,
-                                 action=self.light_press)
+                                 action=self.light_press,
+                                 config=self.config)
                 
                 light.light_btn.place(x=grid_x,
                                       y=grid_y,
@@ -120,6 +146,10 @@ class GameScreen():
         win_rows += self.grid_size + pad_rows * 3
         current_y = win_rows * self.config.tile_size
         
+        grid_canvas.place(x=0,
+                          y=0,
+                          relwidth=1,
+                          relheight=1)
 
         # Button
         button_rows = 1
@@ -133,7 +163,7 @@ class GameScreen():
         # Generate a puzzle
         self.random_grid()
         
-        # Display the window
+        # Update Window Size
 
         screen_width = self.game.winfo_screenwidth()
         screen_height = self.game.winfo_screenheight()
@@ -151,7 +181,28 @@ class GameScreen():
                            str(win_x) +
                            "+" +
                            str(win_y))
+        
+        try:
+            win_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_01).resize((int(win_width), int(win_height))))
+            self.game_canvas.create_image(0, 0, image=win_canvas_bg_img, anchor="nw")
+            grid_canvas.create_image(-pad, -grid_frame_y, image=win_canvas_bg_img, anchor="nw")
+        except:
+            self.game_canvas["bg"] = self.config.col_win_bg
+            grid_canvas["bg"] = self.config.col_win_bg
 
+        self.game_canvas.place(x=0,
+                              y=0,
+                              relwidth=1,
+                              relheight=1)
+
+        # Set Icon
+        try:
+            img = self.config.icon
+            Image.open(self.config.icon)
+        except:
+            img = ""
+
+        self.game.iconbitmap(img)
         self.game.protocol("WM_DELETE_WINDOW", func=lambda: self.button_choice("exit"))
         self.game.mainloop()
 
@@ -196,7 +247,7 @@ class GameScreen():
         
         if self.check_win():
             # Winning condition met, display congrats
-            WinScreen(game_win=self.game).display()
+            WinScreen(game_win=self.game, config=self.config).display()
             
             # Close window and return to the launch screen
             self.button_choice(choice="")

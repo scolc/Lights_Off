@@ -5,8 +5,11 @@ The player is informed that they have won the game.
 """
 
 from tkinter import *
+from PIL import ImageTk, Image
 
 from config import Config
+from message_box import MessageBox
+
 
 
 class WinScreen():
@@ -17,19 +20,27 @@ class WinScreen():
     and the player interaction.
     """
 
-    def __init__(self, game_win: Tk) -> None:
+    def __init__(self, game_win: Tk, config: Config) -> None:
+        """
+        @param config The config
+        """
         # Initialise config
-        self.config = Config()
+        self.config = config #Config()
         
         # Window Settings
         self.game_win = game_win
         self.congrats = Toplevel(game_win)
+        self.congrats_canvas = Canvas(self.congrats,
+                                      highlightthickness=0)
 
         # Button
         self.back = Button(self.congrats,
                            text="Back",
                            font=self.config.btn_font,
-                           command=lambda: self.button_press())
+                           command=lambda: self.button_press(),
+                           border=5,
+                           background=self.config.col_light_on,
+                           activebackground=self.config.col_btn_active)
 
     # Display Function
     def display(self) -> None:
@@ -39,7 +50,7 @@ class WinScreen():
         # Prevent user interacting with main game window
         self.congrats.grab_set()
 
-        # Window properties
+        # Initial Window settings
         self.congrats.title("Lights Off!")
         self.congrats.resizable(width=False, height=False)
         self.congrats["bg"] = self.config.col_win_bg
@@ -58,32 +69,43 @@ class WinScreen():
 
         # Widget Placement
         # Congrats Message
-        message_frame = Frame(self.congrats,
-                              highlightthickness=1,
-                              highlightbackground=self.config.col_frame_border)
+#        message_frame = Frame(self.congrats,
+#                              highlightthickness=1,
+#                              highlightbackground=self.config.col_frame_border)
 
-        message_label = Label(message_frame,
-                             text="Congratulations!",
-                             font=self.config.btn_font)
+#        message_label = Label(message_frame,
+#                             text="Congratulations!",
+#                             font=self.config.btn_font)
 
         current_y = pad
         win_rows = pad_rows
 
         message_frame_rows = 2
-        message_frame.place(x=pad,
-                            y=current_y,
-                            width=widget_width,
-                            height=message_frame_rows * self.config.tile_size)
+        message_frame_height = message_frame_rows * self.config.tile_size
+#        message_frame.place(x=pad,
+#                            y=current_y,
+#                            width=widget_width,
+#                            height=message_frame_rows * self.config.tile_size)
+#
+#        message_label.place(relx=0.5,
+#                            rely=0.5,
+#                            anchor="center")
 
-        message_label.place(relx=0.5,
-                            rely=0.5,
-                            anchor="center")
+        message_frame = MessageBox(toplevel=self.congrats_canvas,
+                                   width=widget_width,
+                                   height=message_frame_height,
+                                   text="Congratulations!",
+                                   config=self.config,
+                                   font_size="large")
+
+        message_frame.frame.place(x=pad, y=current_y)
 
         win_rows += message_frame_rows + pad_rows
         current_y = win_rows * self.config.tile_size
 
         # Button
         button_rows = 1
+
         self.back.place(x=pad,
                         y=current_y,
                         width=widget_width,
@@ -92,6 +114,7 @@ class WinScreen():
         win_rows += button_rows + pad_rows
         current_y = win_rows * self.config.tile_size
 
+        # Update Window Size
         win_height = int(win_rows * self.config.tile_size)
         
         self.congrats.geometry(str(win_width) +
@@ -102,7 +125,27 @@ class WinScreen():
                             "+" +
                             str(win_y))
 
+        try:
+            congrats_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_01).resize((int(win_width), int(win_height))))
+            self.congrats_canvas.create_image(0, 0, image=congrats_canvas_bg_img, anchor="nw")
+        except:
+            self.congrats_canvas["bg"] = self.config.col_win_bg
+
+        self.congrats_canvas.place(x=0,
+                                   y=0,
+                                   relwidth=1,
+                                   relheight=1)
+
+        # Set Icon
+        try:
+            img = self.config.icon
+            Image.open(self.config.icon)
+        except:
+            img = ""
+
         # Display the congrats window and resume the game window once closed
+        self.congrats.iconbitmap(img)
+        self.congrats.protocol("WM_DELETE_WINDOW", func=self.button_press)
         self.game_win.wait_window(self.congrats)
 
     # Button Function
