@@ -10,6 +10,7 @@ Main executable for game.
 from config import Config
 from launch_screen import LaunchScreen as LS
 from game_screen import GameScreen as GS
+from options_screen import OptionsScreen as OS
 
 
 if __name__ == "__main__":
@@ -25,6 +26,10 @@ if __name__ == "__main__":
         if choice == "start":
             choice = GS(config).display()
         
+        if choice == "options":
+            OS(config).display()
+        
         # Exit Game
         if choice == "exit":
             playing = False
+            config.save_config()

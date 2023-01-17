@@ -34,50 +34,56 @@ class MessageBox():
         self.height = height
         self.text = text
         self.config = config
-        self.canvas_bg_img = ""
-        self.frame = self.create_frame(toplevel=toplevel, font_size=font_size)
+        self.frame = Frame(toplevel,
+                           width=self.width,
+                           height=self.height,
+                           highlightthickness=1,
+                           highlightbackground=self.config.col_frame_border)
+        self.canvas = Canvas(self.frame,
+                             highlightthickness=0)
+        self.create_canvas(font_size=font_size)
 
-    def create_frame(self, toplevel: Toplevel, font_size) -> Frame:
+    def create_canvas(self, font_size) -> Frame:
         """
-        Constructs the message frame and returns it.
-
-        @return the message frame.
+        Constructs the message canvas.
         """
-        frame = Frame(toplevel,
-                      width=self.width,
-                      height=self.height,
-                      highlightthickness=1,
-                      highlightbackground=self.config.col_frame_border)
-
-        canvas = Canvas(frame,
-                        highlightthickness=0)
-
         try:
-            #print("started frame")
-            #print(f"width={self.width}")
-            #print(f"height={self.height}")
             self.canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_02).resize((int(self.width), int(self.height))))
-            canvas.create_image(0, 0, image=self.canvas_bg_img, anchor="nw")
-            #print("worked")
+            self.canvas_image = self.canvas.create_image(0, 0, image=self.canvas_bg_img, anchor="nw")
         except:
-            canvas["bg"] = self.config.col_win_bg
+            self.canvas["bg"] = self.config.col_win_bg
 
-        canvas.place(x=0,
+        self.canvas.place(x=0,
                      y=0,
                      relwidth=1,
                      relheight=1)
-        
-        if font_size == "large":
-            font = self.config.msg_font_large
-        else:
-            font = self.config.msg_font
-        
 
-        canvas.create_text((self.width / 2),
+        if font_size == "large":
+            font = self.config.font_large
+        elif font_size == "normal":
+            font = self.config.font_med
+        else:
+            font = self.config.font_small
+
+        self.canvas.create_text((self.width / 2),
                            (self.height / 2),
                            anchor="center",
                            text=self.text,
                            font=font,
                            justify="center")
-        
-        return frame
+
+    def place(self, x, y) -> None:
+        """
+        Places the frame at (x, y).
+        """
+        self.frame.place(x=x, y=y)
+    
+    def update(self) -> None:
+        """
+        Updates the colour scheme when a new button is selected.
+        """
+        try:
+            self.canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_02).resize((int(self.width), int(self.height))))
+            self.canvas.itemconfig(self.canvas_image, image=self.canvas_bg_img)
+        except:
+            self.canvas["bg"] = self.config.col_win_bg

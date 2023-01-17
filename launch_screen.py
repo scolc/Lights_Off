@@ -28,21 +28,29 @@ class LaunchScreen():
         
         # Window Settings
         self.launch = Tk()
-        self.win_canvas = Canvas(self.launch,
-                                 highlightthickness=0)
+        self.launch_canvas = Canvas(self.launch,
+                                    highlightthickness=0)
 
         # Buttons
-        self.start = Button(self.win_canvas, #self.launch,
+        self.start = Button(self.launch_canvas,
                             text="Start",
-                            font=self.config.btn_font,
+                            font=self.config.font_med,
                             command=lambda: self.button_choice("start"),
                             border=5,
                             background=self.config.col_light_on,
                             activebackground=self.config.col_btn_active)
 
-        self.exit = Button(self.win_canvas, #self.launch,
+        self.options = Button(self.launch_canvas,
+                              text="Options",
+                              font=self.config.font_med,
+                              command=lambda: self.button_choice("options"),
+                              border=5,
+                              background=self.config.col_light_on,
+                              activebackground=self.config.col_btn_active)
+
+        self.exit = Button(self.launch_canvas,
                            text="Exit",
-                           font=self.config.btn_font,
+                           font=self.config.font_med,
                            command=lambda: self.button_choice("exit"),
                            border=5,
                            background=self.config.col_light_on,
@@ -77,75 +85,50 @@ class LaunchScreen():
 
         # Widget Placement
         # Welcome Message
-#        welcome_frame = Frame(self.win_canvas, #self.launch,
-#                              highlightthickness=1,
-#                              highlightbackground=self.config.col_frame_border)
-        
         welcome_message = ("Welcome to Lights Off!\n\n" +
                            "Click 'Start' to play or\n'Exit' to quit.")
         
-#        welcome_canvas = Canvas(welcome_frame,
-#                                highlightthickness=0)
-        
         current_y = pad
-        win_rows = pad_rows
 
         welcome_frame_rows = 3
         welcome_frame_height = welcome_frame_rows * self.config.tile_size
-#        welcome_frame.place(x=pad,
-#                            y=current_y,
-#                            width=widget_width,
-#                            height=welcome_frame_height)
 
-#        try:
-#            welcome_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_02).resize((widget_width, welcome_frame_height)))
-#            welcome_canvas.create_image(0, 0, image=welcome_canvas_bg_img, anchor="nw")
-#        except:
-#            welcome_canvas["bg"] = self.config.col_win_bg
-#
-#        welcome_canvas.place(x=0,
-#                             y=0,
-#                             relwidth=1,
-#                             relheight=1)
-#
-#        welcome_canvas.create_text((widget_width / 2),
-#                                   (welcome_frame_height / 2),
-#                                   anchor="center",
-#                                   text=welcome_message,
-#                                   font=self.config.msg_font,
-#                                   justify="center")
-
-        welcome_frame = MessageBox(toplevel=self.win_canvas,
+        welcome_frame = MessageBox(toplevel=self.launch_canvas,
                                    width=widget_width,
                                    height=welcome_frame_height,
                                    text=welcome_message,
                                    config=self.config)
 
-        welcome_frame.frame.place(x=pad, y=current_y)
+        welcome_frame.place(x=pad, y=current_y)
 
-        win_rows += welcome_frame_rows + pad_rows
-        current_y = win_rows * self.config.tile_size
+        current_y += welcome_frame_height + pad
         
         # Buttons
-        button_rows = 1
+        button_height = self.config.tile_size
         
         self.start.place(x=pad,
                          y=current_y,
                          width=widget_width,
-                         height=button_rows * self.config.tile_size)
+                         height=button_height)
 
-        win_rows += button_rows + pad_rows
-        current_y = win_rows * self.config.tile_size
+        current_y += button_height + pad
+
+        self.options.place(x=pad,
+                           y=current_y,
+                           width=widget_width,
+                           height=button_height)
+
+        current_y += button_height + pad
 
         self.exit.place(x=pad,
                         y=current_y,
                         width=widget_width,
-                        height=self.config.tile_size)
+                        height=button_height)
         
-        win_rows += button_rows + pad_rows
+        current_y += button_height + pad
 
         # Update Window Size
-        win_height = int(win_rows * self.config.tile_size)
+        win_height = int(current_y)
 
         self.launch.geometry(str(win_width) +
                             "x" +
@@ -157,11 +140,11 @@ class LaunchScreen():
         
         try:
             win_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_01).resize((int(win_width), int(win_height))))
-            self.win_canvas.create_image(0, 0, image=win_canvas_bg_img, anchor="nw")
+            self.launch_canvas.create_image(0, 0, image=win_canvas_bg_img, anchor="nw")
         except:
-            self.win_canvas["bg"] = self.config.col_win_bg
+            self.launch_canvas["bg"] = self.config.col_win_bg
         
-        self.win_canvas.place(x=0,
+        self.launch_canvas.place(x=0,
                               y=0,
                               relwidth=1,
                               relheight=1)

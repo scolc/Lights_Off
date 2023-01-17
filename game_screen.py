@@ -23,7 +23,7 @@ class GameScreen():
 
     def __init__(self, config: Config) -> None:
         """
-        @param config The config
+        @param config The config.
         """
         # Initialise config
         self.config = config #Config()
@@ -39,7 +39,7 @@ class GameScreen():
         # Exit Button
         self.exit = Button(self.game_canvas,
                            text="Exit",
-                           font=self.config.btn_font,
+                           font=self.config.font_med,
                            command=lambda: self.button_choice("exit"),
                            border=5,
                            background=self.config.col_light_on,
@@ -97,6 +97,7 @@ class GameScreen():
                                    width=widget_width,
                                    height=message_frame_height,
                                    text=message,
+                                   font_size="small",
                                    config=self.config)
 
         message_frame.frame.place(x=pad, y=current_y)
