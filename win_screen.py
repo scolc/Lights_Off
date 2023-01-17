@@ -36,7 +36,7 @@ class WinScreen():
         # Button
         self.back = Button(self.congrats,
                            text="Back",
-                           font=self.config.btn_font,
+                           font=self.config.font_med,
                            command=lambda: self.button_press(),
                            border=5,
                            background=self.config.col_light_on,
@@ -98,6 +98,7 @@ class WinScreen():
                                    config=self.config,
                                    font_size="large")
 
+        #message_frame.frame.place(x=pad, y=current_y)
         message_frame.frame.place(x=pad, y=current_y)
 
         win_rows += message_frame_rows + pad_rows
