@@ -5,7 +5,8 @@ The player chooses to either play a grid or exit the game.
 """
 
 from tkinter import *
-from PIL import ImageTk, Image
+
+from PIL import Image, ImageTk
 
 from config import Config
 from message_box import MessageBox
@@ -14,7 +15,7 @@ from message_box import MessageBox
 class LaunchScreen():
     """
     The Welcome screen class.
-    
+
     Handles the creation of the launch window, display of the buttons
     and the player interaction.
     """
@@ -25,7 +26,7 @@ class LaunchScreen():
         """
         # Initialise config
         self.config = config
-        
+
         # Window Settings
         self.launch = Tk()
         self.launch_canvas = Canvas(self.launch,
@@ -67,7 +68,7 @@ class LaunchScreen():
         @return The player choice string.
         """
         # Initial Window Settings
-        self.launch.title("Lights Off!")
+        self.launch.title("Lights Off! - Launch!")
         self.launch.resizable(width=False, height=False)
         self.launch["bg"] = self.config.col_win_bg
 
@@ -87,7 +88,7 @@ class LaunchScreen():
         # Welcome Message
         welcome_message = ("Welcome to Lights Off!\n\n" +
                            "Click 'Start' to play or\n'Exit' to quit.")
-        
+
         current_y = pad
 
         welcome_frame_rows = 3
@@ -102,10 +103,10 @@ class LaunchScreen():
         welcome_frame.place(x=pad, y=current_y)
 
         current_y += welcome_frame_height + pad
-        
+
         # Buttons
         button_height = self.config.tile_size
-        
+
         self.start.place(x=pad,
                          y=current_y,
                          width=widget_width,
@@ -124,40 +125,46 @@ class LaunchScreen():
                         y=current_y,
                         width=widget_width,
                         height=button_height)
-        
+
         current_y += button_height + pad
 
         # Update Window Size
         win_height = int(current_y)
 
         self.launch.geometry(str(win_width) +
-                            "x" +
-                            str(win_height) +
-                            "+" +
-                            str(win_x) +
-                            "+" +
-                            str(win_y))
-        
+                             "x" +
+                             str(win_height) +
+                             "+" +
+                             str(win_x) +
+                             "+" +
+                             str(win_y))
+
         try:
-            win_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_01).resize((int(win_width), int(win_height))))
-            self.launch_canvas.create_image(0, 0, image=win_canvas_bg_img, anchor="nw")
-        except:
+            win_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config
+                                                              .bg_01)
+                                                   .resize((int(win_width),
+                                                            int(win_height))))
+            self.launch_canvas.create_image(0, 0,
+                                            image=win_canvas_bg_img,
+                                            anchor="nw")
+        except FileNotFoundError:
             self.launch_canvas["bg"] = self.config.col_win_bg
-        
+
         self.launch_canvas.place(x=0,
-                              y=0,
-                              relwidth=1,
-                              relheight=1)
+                                 y=0,
+                                 relwidth=1,
+                                 relheight=1)
 
         # Set Icon
         try:
             img = self.config.icon
             Image.open(self.config.icon)
-        except:
+        except FileNotFoundError:
             img = ""
 
         self.launch.iconbitmap(img)
-        self.launch.protocol("WM_DELETE_WINDOW", func=lambda: self.button_choice("exit"))
+        self.launch.protocol("WM_DELETE_WINDOW",
+                             func=lambda: self.button_choice("exit"))
         self.launch.mainloop()
         return self.choice
 

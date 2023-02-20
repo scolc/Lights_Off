@@ -1,46 +1,6 @@
 {
-    "main": {
-        "tile_size": 60,
-        "font": "Calibri",
-        "icon": "images/lights_off.ico",
-        "current": "green"
-    },
-    "colours": {
-        "blue": {
-            "id": "blue",
-            "col_01": "#26c6da",
-            "col_02": "#154950",
-            "col_03": "#91f3ff",
-            "col_04": "#000000",
-            "file_01": "images/bg_blue_01.png",
-            "file_02": "images/bg_blue_02.png"
-        },
-        "yellow": {
-            "id": "yellow",
-            "col_01": "#ffec00",
-            "col_02": "#525252",
-            "col_03": "#f8feb5",
-            "col_04": "#000000",
-            "file_01": "images/bg_yellow_01.png",
-            "file_02": "images/bg_yellow_02.png"
-        },
-        "red": {
-            "id": "red",
-            "col_01": "#c70808",
-            "col_02": "#290a0a",
-            "col_03": "#ff7171",
-            "col_04": "#000000",
-            "file_01": "images/bg_red_01.png",
-            "file_02": "images/bg_red_02.png"
-        },
-        "green": {
-            "id": "green",
-            "col_01": "#46d500",
-            "col_02": "#20271d",
-            "col_03": "#a2d987",
-            "col_04": "#000000",
-            "file_01": "images/bg_green_01.png",
-            "file_02": "images/bg_green_02.png"
-        }
-    }
+    "tile_size": 60,
+    "font": "Calibri",
+    "icon": "images/lights_off.ico",
+    "current": "yellow"
 }

@@ -6,20 +6,20 @@ available in the config file.
 """
 
 from tkinter import *
-from PIL import ImageTk, Image
 from typing import Callable
 
 from config import Config
 from selection_btn import SelectionBtn
 
+
 class OptionsColours():
     """
     The options colour frame class.
-    
+
     Handles creation of a custom sized frame.
     Stores the player's colour selection.
     """
-    
+
     def __init__(self,
                  toplevel: Toplevel,
                  width,
@@ -57,8 +57,7 @@ class OptionsColours():
         current_y = pad
 
         # Canvas Text Space
-        #text_y = current_y
-        
+
         self.canvas.create_text((self.width / 2),
                                 current_y,
                                 anchor="n",
@@ -69,8 +68,8 @@ class OptionsColours():
 
         # Create Buttons
         # Iterate through the available colours and create a button for each.
-        btn_width=self.config.tile_size
-        btn_height=self.config.tile_size
+        btn_width = self.config.tile_size
+        btn_height = self.config.tile_size
         for entry in self.config.colours:
             btn = SelectionBtn(self.canvas,
                                width=btn_width,
@@ -79,22 +78,22 @@ class OptionsColours():
                                action=self.update_selection,
                                config=self.config)
             self.buttons.append(btn)
-        
+
         # Place each button
         btn_space_width = self.width - (pad * 2)
-        btn_x = pad + (btn_space_width%btn_width/2)
+        btn_x = pad + (btn_space_width % btn_width / 2)
         for btn in self.buttons:
             # Check if another button will fit
             if btn_x + btn_width > btn_space_width:
-                btn_x = pad + (btn_space_width%btn_width/2)
+                btn_x = pad + (btn_space_width % btn_width / 2)
                 current_y += btn_height
-            
+
             btn.place(x=btn_x, y=current_y)
             # Check if button matches current selection
             if btn.id == self.config.main["current"]:
                 btn.flip()
                 self.selection = btn.id
-            
+
             # Update coords
             btn_x += btn_width
 
@@ -105,13 +104,11 @@ class OptionsColours():
         self.canvas["bg"] = self.config.col_win_bg
 
         self.canvas.place(x=0,
-                     y=0,
-                     relwidth=1,
-                     relheight=1)
-        
-        return self.frame
+                          y=0,
+                          relwidth=1,
+                          relheight=1)
 
-        
+        return self.frame
 
     def place(self, x, y) -> None:
         """
@@ -121,7 +118,6 @@ class OptionsColours():
                          y=y,
                          width=self.width,
                          height=self.height)
-        
 
     def update_selection(self, id) -> None:
         """
@@ -138,7 +134,7 @@ class OptionsColours():
                 btn.flip()
                 self.selection = id
                 self.config.main["current"] = id
-                
+
         self.config.update()
         self.frame["bg"] = self.config.col_win_bg
         self.canvas["bg"] = self.config.col_win_bg

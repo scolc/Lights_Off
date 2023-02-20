@@ -8,11 +8,10 @@ from typing import Callable
 from config import Config
 
 
-
 class SelectionBtn():
     """
     The selection button class.
-    
+
     Used to store the selection variables.
 
     Manages the selection state.
@@ -34,25 +33,26 @@ class SelectionBtn():
         @param config The config.
         """
         # Initialise config
-        self.config = config #Config()
+        self.config = config
 
         # Position
         self.id = id
 
         # Button properties
         self.selected = False
-        
+
         self.frame = Frame(win,
                            width=width,
                            height=height,
                            background=self.config.col_win_bg,
                            highlightbackground=self.config.col_frame_border,
                            highlightthickness=0)
-        
+
         self.btn = Button(self.frame,
-                                command=lambda: action(id=self.id),
-                                background=self.config.colours[self.id]["col_01"],
-                                activebackground=self.config.colours[self.id]["col_03"])
+                          command=lambda: action(id=self.id),
+                          background=self.config.colours[self.id]["col_01"],
+                          activebackground=(self.config
+                                            .colours[self.id]["col_03"]))
 
         self.btn.place(relx=0.5,
                        rely=0.5,
@@ -65,7 +65,7 @@ class SelectionBtn():
         Places the frame at (x, y).
         """
         self.frame.place(x=x, y=y)
-    
+
     def flip(self) -> None:
         """
         This method flips the state of the button.

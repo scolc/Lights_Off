@@ -8,11 +8,10 @@ from typing import Callable
 from config import Config
 
 
-
 class LightBtn():
     """
     The light button class.
-    
+
     Used to store the light's variables.
 
     Manages the light state and position in the grid.
@@ -32,7 +31,7 @@ class LightBtn():
         @param config The config
         """
         # Initialise config
-        self.config = config #Config()
+        self.config = config
 
         # Position
         self.row = row
@@ -40,9 +39,10 @@ class LightBtn():
 
         # Button properties
         self.state = "off"
-        
+
         self.light_btn = Button(win,
-                                command=lambda: action(row=self.row, col=self.col),
+                                command=lambda: action(row=self.row,
+                                                       col=self.col),
                                 background=self.config.col_light_off,
                                 activebackground=self.config.col_btn_active)
 
