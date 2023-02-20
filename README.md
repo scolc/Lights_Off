@@ -15,7 +15,7 @@ To play, run the lights_off.exe file.
 <br>
 <br>
 ### Video Demo
-A video demo can be found at youtube at the following link:
+A video demo can be found on youtube at the following link:
 https://youtu.be/I5e0utkMARw
 <br>
 <br>
