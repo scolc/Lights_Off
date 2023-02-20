@@ -1,0 +1,74 @@
+{
+	"blue": {
+		"id": "blue",
+		"col_01": "#24e1f2",
+		"col_02": "#192526",
+		"col_03": "#8cf5ff",
+		"col_04": "#000000",
+		"file_01": "images/bg_blue_01.png",
+		"file_02": "images/bg_blue_02.png"
+	},
+	"yellow": {
+		"id": "yellow",
+		"col_01": "#fff224",
+		"col_02": "#262619",
+		"col_03": "#fbff8c",
+		"col_04": "#000000",
+		"file_01": "images/bg_yellow_01.png",
+		"file_02": "images/bg_yellow_02.png"
+	},
+	"red": {
+		"id": "red",
+		"col_01": "#f20c0c",
+		"col_02": "#261919",
+		"col_03": "#ff8c8c",
+		"col_04": "#000000",
+		"file_01": "images/bg_red_01.png",
+		"file_02": "images/bg_red_02.png"
+	},
+	"green": {
+		"id": "green",
+		"col_01": "#69f224",
+		"col_02": "#1d2619",
+		"col_03": "#b3ff8c",
+		"col_04": "#000000",
+		"file_01": "images/bg_green_01.png",
+		"file_02": "images/bg_green_02.png"
+	},
+	"purple": {
+		"id": "purple",
+		"col_01": "#b90cf2",
+		"col_02": "#231926",
+		"col_03": "#d78cff",
+		"col_04": "#000000",
+		"file_01": "images/bg_purple_01.png",
+		"file_02": "images/bg_purple_02.png"
+	},
+	"pink": {
+		"id": "pink",
+		"col_01": "#f285c0",
+		"col_02": "#26151e",
+		"col_03": "#ffbfe2",
+		"col_04": "#000000",
+		"file_01": "images/bg_pink_01.png",
+		"file_02": "images/bg_pink_02.png"
+	},
+	"orange": {
+		"id": "orange",
+		"col_01": "#f2870c",
+		"col_02": "#262019",
+		"col_03": "#ffc98c",
+		"col_04": "#000000",
+		"file_01": "images/bg_orange_01.png",
+		"file_02": "images/bg_orange_02.png"
+	},
+	"white": {
+		"id": "white",
+		"col_01": "#f2f2eb",
+		"col_02": "#262625",
+		"col_03": "#ccccc6",
+		"col_04": "#000000",
+		"file_01": "images/bg_white_01.png",
+		"file_02": "images/bg_white_02.png"
+	}
+}

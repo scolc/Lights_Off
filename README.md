@@ -4,5 +4,11 @@ A small "Lights Out" style puzzle game, where the objective is to switch off all
 A grid of lights is randomly generated.
 Clicking on a light will toggle the light and any adjacent lights on or off.
 
-The game executable can be found in the dist folder.
-Open the dist folder -> lights_off folder -> run the lights_off.exe file.
+## Features:
+* Random generation of puzzles
+* Option to change colour scheme
+* Saves user options between sessions
+
+Check the latest release tags and download the latest binaries.
+To play, run the lights_off.exe file.
+

@@ -1,5 +1,5 @@
-__pycache__/*
-todo.txt
-lights_off.spec
-build
+__pycache__/
+output/
+recordings/
 autopy_config.json
+lights_off.spec

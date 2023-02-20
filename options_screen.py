@@ -5,9 +5,10 @@ Allows the player to set options that update the config.
 """
 
 from tkinter import *
-from config import Config
-from PIL import ImageTk, Image
 
+from PIL import Image, ImageTk
+
+from config import Config
 from message_box import MessageBox
 from options_colours import OptionsColours
 
@@ -15,7 +16,7 @@ from options_colours import OptionsColours
 class OptionsScreen():
     """
     The options screen class.
-    
+
     Handles creation of the options and updates config based
     on user selection.
     """
@@ -25,15 +26,15 @@ class OptionsScreen():
         @param config The config.
         """
         # Initialise config
-        self.config = config #Config()
+        self.config = config
 
         # Window Settings
         self.options = Tk()
         self.options_canvas = Canvas(self.options,
                                      highlightthickness=0)
-        
+
         self.message_frame = ""
-        
+
         # Button
         self.save = Button(self.options_canvas,
                            text="Save & Exit",
@@ -42,15 +43,15 @@ class OptionsScreen():
                            border=5,
                            background=self.config.col_light_on,
                            activebackground=self.config.col_btn_active)
-        
+
         self.choice = ""
-    
+
     def display(self) -> None:
         """
         This function handles displaying the window.
         """
         # Initial Window Settings
-        self.options.title("Lights Off!")
+        self.options.title("Lights Off! - Options")
         self.options.resizable(width=False, height=False)
         self.options["bg"] = self.config.col_win_bg
 
@@ -69,7 +70,6 @@ class OptionsScreen():
         # Widget Placement
         # Options Message
         current_y = pad
-        #win_rows = pad_rows
 
         message_frame_rows = 2
         message_frame_height = message_frame_rows * self.config.tile_size
@@ -102,7 +102,7 @@ class OptionsScreen():
                         y=current_y,
                         width=widget_width,
                         height=btn_height)
-        
+
         current_y += btn_height + pad
 
         # Update Window Size
@@ -117,9 +117,16 @@ class OptionsScreen():
                               str(win_y))
 
         try:
-            options_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_01).resize((int(self.win_width), int(self.win_height))))
-            self.canvas_image = self.options_canvas.create_image(0, 0, image=options_canvas_bg_img, anchor="nw")
-        except:
+            optns_canv_bg_img = (ImageTk
+                                 .PhotoImage(Image
+                                             .open(self.config.bg_01)
+                                             .resize((int(self.win_width),
+                                                      int(self.win_height)))))
+            self.canvas_image = (self.options_canvas
+                                 .create_image(0, 0,
+                                               image=optns_canv_bg_img,
+                                               anchor="nw"))
+        except FileNotFoundError:
             self.options_canvas["bg"] = self.config.col_win_bg
 
         self.options_canvas.place(x=0,
@@ -131,7 +138,7 @@ class OptionsScreen():
         try:
             img = self.config.icon
             Image.open(self.config.icon)
-        except:
+        except FileNotFoundError:
             img = ""
 
         # Display the congrats window and resume the game window once closed
@@ -139,15 +146,11 @@ class OptionsScreen():
         self.options.protocol("WM_DELETE_WINDOW", func=self.button_press)
         self.options.mainloop()
 
-
     # Button Function
     def button_press(self) -> None:
         """
         This function handles the button press and closes the window.
         """
-        # Update current selection
-        #self.config.main["current"] = self.options_frame.selection
-        #self.config.update()
         self.options.destroy()
 
     def update(self) -> None:
@@ -156,17 +159,19 @@ class OptionsScreen():
         """
         self.options["bg"] = self.config.col_win_bg
         try:
-            options_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_01).resize((int(self.win_width), int(self.win_height))))
-            self.options_canvas.itemconfig(self.canvas_image, image=options_canvas_bg_img)
-            self.options_canvas.imgref = options_canvas_bg_img
-        except:
+            optns_cnv_bg_img = (ImageTk
+                                .PhotoImage(Image.open(self.config.bg_01)
+                                            .resize((int(self.win_width),
+                                                    int(self.win_height)))))
+            self.options_canvas.itemconfig(self.canvas_image,
+                                           image=optns_cnv_bg_img)
+            self.options_canvas.imgref = optns_cnv_bg_img
+        except FileNotFoundError:
             self.options_canvas["bg"] = self.config.col_win_bg
-        
+
         # Message Frame
         self.message_frame.update()
-        
+
         # Button
         self.save["bg"] = self.config.col_light_on
         self.save["activebackground"] = self.config.col_btn_active
-
-        

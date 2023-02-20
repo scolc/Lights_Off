@@ -5,17 +5,17 @@ The player is informed that they have won the game.
 """
 
 from tkinter import *
-from PIL import ImageTk, Image
+
+from PIL import Image, ImageTk
 
 from config import Config
 from message_box import MessageBox
 
 
-
 class WinScreen():
     """
     The win screen class.
-    
+
     Handles the creation of the win screen window, display of the button
     and the player interaction.
     """
@@ -25,8 +25,8 @@ class WinScreen():
         @param config The config
         """
         # Initialise config
-        self.config = config #Config()
-        
+        self.config = config
+
         # Window Settings
         self.game_win = game_win
         self.congrats = Toplevel(game_win)
@@ -51,7 +51,7 @@ class WinScreen():
         self.congrats.grab_set()
 
         # Initial Window settings
-        self.congrats.title("Lights Off!")
+        self.congrats.title("Lights Off! - Congratulations")
         self.congrats.resizable(width=False, height=False)
         self.congrats["bg"] = self.config.col_win_bg
 
@@ -69,27 +69,11 @@ class WinScreen():
 
         # Widget Placement
         # Congrats Message
-#        message_frame = Frame(self.congrats,
-#                              highlightthickness=1,
-#                              highlightbackground=self.config.col_frame_border)
-
-#        message_label = Label(message_frame,
-#                             text="Congratulations!",
-#                             font=self.config.btn_font)
-
         current_y = pad
         win_rows = pad_rows
 
         message_frame_rows = 2
         message_frame_height = message_frame_rows * self.config.tile_size
-#        message_frame.place(x=pad,
-#                            y=current_y,
-#                            width=widget_width,
-#                            height=message_frame_rows * self.config.tile_size)
-#
-#        message_label.place(relx=0.5,
-#                            rely=0.5,
-#                            anchor="center")
 
         message_frame = MessageBox(toplevel=self.congrats_canvas,
                                    width=widget_width,
@@ -98,7 +82,6 @@ class WinScreen():
                                    config=self.config,
                                    font_size="large")
 
-        #message_frame.frame.place(x=pad, y=current_y)
         message_frame.frame.place(x=pad, y=current_y)
 
         win_rows += message_frame_rows + pad_rows
@@ -117,19 +100,24 @@ class WinScreen():
 
         # Update Window Size
         win_height = int(win_rows * self.config.tile_size)
-        
+
         self.congrats.geometry(str(win_width) +
-                            "x" +
-                            str(win_height) +
-                            "+" +
-                            str(win_x) +
-                            "+" +
-                            str(win_y))
+                               "x" +
+                               str(win_height) +
+                               "+" +
+                               str(win_x) +
+                               "+" +
+                               str(win_y))
 
         try:
-            congrats_canvas_bg_img = ImageTk.PhotoImage(Image.open(self.config.bg_01).resize((int(win_width), int(win_height))))
-            self.congrats_canvas.create_image(0, 0, image=congrats_canvas_bg_img, anchor="nw")
-        except:
+            congrats_canvas_bg_img = (ImageTk
+                                      .PhotoImage(Image.open(self.config.bg_01)
+                                                  .resize((int(win_width),
+                                                           int(win_height)))))
+            self.congrats_canvas.create_image(0, 0,
+                                              image=congrats_canvas_bg_img,
+                                              anchor="nw")
+        except FileNotFoundError:
             self.congrats_canvas["bg"] = self.config.col_win_bg
 
         self.congrats_canvas.place(x=0,
@@ -141,7 +129,7 @@ class WinScreen():
         try:
             img = self.config.icon
             Image.open(self.config.icon)
-        except:
+        except FileNotFoundError:
             img = ""
 
         # Display the congrats window and resume the game window once closed
